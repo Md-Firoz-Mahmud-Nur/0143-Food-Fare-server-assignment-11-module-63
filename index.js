@@ -27,6 +27,12 @@ async function run() {
     const foodDatabase = client.db("foodDB");
     const foodCollection = foodDatabase.collection("food");
 
+    app.get("/allAvailableFoods", async (req, res) => {
+      const cursor = foodCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.get("/sixFood", async (req, res) => {
       const cursor = foodCollection.find().sort({ foodQuantity: -1 }).limit(6);
       try {
