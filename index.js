@@ -29,7 +29,7 @@ async function run() {
     const requestedFoodCollection = foodDatabase.collection("requestedFood");
 
     app.get("/allAvailableFoods", async (req, res) => {
-      const cursor = foodCollection.find();
+      const cursor = foodCollection.find({ foodStatus: "Available" });
       const result = await cursor.toArray();
       res.send(result);
     });
