@@ -27,10 +27,15 @@ async function run() {
     const foodDatabase = client.db("foodDB");
     const foodCollection = foodDatabase.collection("food");
 
-    app.get("/food", async (req, res) => {
-      const cursor = foodCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
+    app.get("/sixFood", async (req, res) => {
+      const cursor = foodCollection.find().sort({ foodQuantity: -1 }).limit(6);
+      try {
+        const result = await cursor.toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+        res.status(500).send("Internal Server Error");
+      }
     });
 
     app.post("/food", async (req, res) => {
@@ -39,7 +44,6 @@ async function run() {
       const result = await foodCollection.insertOne(newFood);
       res.send(result);
     });
-
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
