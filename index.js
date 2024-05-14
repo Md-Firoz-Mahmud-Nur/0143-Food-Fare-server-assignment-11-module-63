@@ -3,7 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 3000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 //Middleware
 app.use(cors());
@@ -42,6 +42,13 @@ async function run() {
         console.error("Error fetching food items:", error);
         res.status(500).send("Internal Server Error");
       }
+    });
+
+    app.get("/food/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await foodCollection.findOne(query);
+      res.send(result);
     });
 
     app.post("/food", async (req, res) => {
