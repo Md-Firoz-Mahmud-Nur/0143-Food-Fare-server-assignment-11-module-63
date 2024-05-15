@@ -79,9 +79,14 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/updateFood/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await foodCollection.findOne(query);
+      res.send(result);
+    });
     app.get("/food/:id", async (req, res) => {
-
-
       const id = req.params.id;
       console.log(id);
       const query = { _id: new ObjectId(id) };
@@ -96,7 +101,6 @@ async function run() {
       const result = await foodCollection.deleteOne(query);
       res.send(result);
     });
-
 
     app.post("/food", async (req, res) => {
       const newFood = req.body;
