@@ -79,9 +79,13 @@ async function run() {
     });
 
     app.get("/sixFood", async (req, res) => {
-      const cursor = foodCollection.find({ foodStatus: "Available" }).sort({ foodQuantity: -1 }).limit(6);
+      const cursor = foodCollection.find({ foodStatus: "Available" }).sort({ foodQuantity: -1 });
       try {
         const result = await cursor.toArray();
+        result.forEach(item => {
+          item.foodQuantity = parseInt(item.foodQuantity);
+        });
+        result.sort((a, b) => b.foodQuantity - a.foodQuantity);
         res.send(result);
       } catch (error) {
         console.error("Error fetching food items:", error);
