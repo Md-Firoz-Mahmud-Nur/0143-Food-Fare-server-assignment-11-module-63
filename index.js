@@ -79,7 +79,7 @@ async function run() {
     });
 
     app.get("/sixFood", async (req, res) => {
-      const cursor = foodCollection.find({ foodStatus: "Available" }).sort({ foodQuantity: -1 });
+      const cursor = foodCollection.find({ foodStatus: "Available" }).sort({ foodQuantity: -1 }).limit(6);
       try {
         const result = await cursor.toArray();
         result.forEach(item => {
