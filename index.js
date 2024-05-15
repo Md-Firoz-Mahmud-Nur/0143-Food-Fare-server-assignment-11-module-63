@@ -42,6 +42,12 @@ async function run() {
       const updateFoodStatus = {
         $set: {
           foodStatus: req.body.foodStatus,
+          additionalNotes: req.body.additionalNotes,
+          foodName: req.body.foodName,
+          foodQuantity: req.body.foodQuantity,
+          foodImageURL: req.body.foodImageURL,
+          pickupLocation: req.body.pickupLocation,
+          expireDate: req.body.expireDate,
         },
       };
       const result = await foodCollection.updateOne(
