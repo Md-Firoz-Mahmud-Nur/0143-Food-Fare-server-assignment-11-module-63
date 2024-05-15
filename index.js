@@ -89,6 +89,15 @@ async function run() {
       res.send(result);
     });
 
+    app.delete("/food/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await foodCollection.deleteOne(query);
+      res.send(result);
+    });
+
+
     app.post("/food", async (req, res) => {
       const newFood = req.body;
       console.log(newFood);
