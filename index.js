@@ -6,7 +6,16 @@ const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 //Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://s0142-food-fare-ass-11-mod-63.web.app",
+      "https://s0142-food-fare-ass-11-mod-63.firebaseapp.com/",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_SECRET_KEY}@cluster0.fp5eepf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -42,7 +51,6 @@ async function run() {
       const updateFoodStatus = {
         $set: {
           foodStatus: req.body.foodStatus,
-
         },
       };
       const result = await foodCollection.updateOne(
@@ -79,10 +87,13 @@ async function run() {
     });
 
     app.get("/sixFood", async (req, res) => {
-      const cursor = foodCollection.find({ foodStatus: "Available" }).sort({ foodQuantity: -1 }).limit(6);
+      const cursor = foodCollection
+        .find({ foodStatus: "Available" })
+        .sort({ foodQuantity: -1 })
+        .limit(6);
       try {
         const result = await cursor.toArray();
-        result.forEach(item => {
+        result.forEach((item) => {
           item.foodQuantity = parseInt(item.foodQuantity);
         });
         result.sort((a, b) => b.foodQuantity - a.foodQuantity);
